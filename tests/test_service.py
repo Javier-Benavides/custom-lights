@@ -1,5 +1,5 @@
+import calendar
 import os
-import time
 import unittest
 
 from luces import paths, scenes, service
@@ -30,7 +30,7 @@ class Service(unittest.TestCase):
         for folder in (paths.CONTROL, paths.DATA, paths.RUN):
             for f in os.listdir(folder):
                 os.unlink(os.path.join(folder, f))
-        self.t = time.mktime((2026, 11, 5, 15, 0, 0, 0, 0, -1))
+        self.t = calendar.timegm((2026, 11, 5, 18, 0, 0))   # a fixed instant, the same in every time zone
         self.output = FakeOutput()
 
     def service(self):

@@ -1,11 +1,11 @@
-import time
+import calendar
 import unittest
 
 from luces import scenes
 from luces.physics.sun_position import HORIZON, sun_altitude
 from tests.helpers import SETTINGS, SOUTH, epoch
 
-NOON = time.mktime((2026, 11, 5, 15, 0, 0, 0, 0, -1))
+NOON = calendar.timegm((2026, 11, 5, 18, 0, 0))   # a fixed instant, the same in every time zone
 
 
 def after_hours(t):

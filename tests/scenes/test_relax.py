@@ -1,11 +1,11 @@
-import time
+import calendar
 import unittest
 
 from luces import color, scenes
 from luces.scenes import relax
 from tests.helpers import PLACE, SETTINGS, ctx_at, distance
 
-NOON = time.mktime((2026, 11, 5, 15, 0, 0, 0, 0, -1))
+NOON = calendar.timegm((2026, 11, 5, 18, 0, 0))   # a fixed instant, the same in every time zone
 A = SETTINGS["relax"]
 
 

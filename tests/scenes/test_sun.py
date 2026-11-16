@@ -1,12 +1,12 @@
+import calendar
 import math
-import time
 import unittest
 
 from luces import color, scenes, service
 from luces.scenes import sun
 from tests.helpers import SETTINGS, autocorrelation, band_power, correlation, ctx_at, distance
 
-NOON = time.mktime((2026, 11, 5, 15, 0, 0, 0, 0, -1))
+NOON = calendar.timegm((2026, 11, 5, 18, 0, 0))   # a fixed instant, the same in every time zone
 STEP = sun.SCENE.frame_s
 A = SETTINGS["sun"]
 
