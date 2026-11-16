@@ -157,6 +157,15 @@ def _status():
         for key in ("problem", "settings_error"):
             if s.get(key):
                 print(f"Warning: {s[key]}")
+        for name, d in (s.get("devices") or {}).items():
+            title = {"mouse": "Mouse", "gpu": "GPU", "keyboard": "Keyboard"}.get(name, name)
+            if d.get("problem"):
+                print(f"{title}: warning: {d['problem']}")
+            elif d.get("color") is None:
+                print(f"{title}: waiting for its first color")
+            else:
+                rgb = tuple(d["color"])
+                print(f"{title}: {'off' if max(rgb) == 0 else 'color %02X%02X%02X' % rgb}, {d.get('sends', 0)} sends")
     w = st.read_json(paths.data("weather.json"))
     if w:
         print(f"Weather, observed {(time.time() - w.get('time', 0)) / 60:.0f} min ago: {w.get('raw')}")

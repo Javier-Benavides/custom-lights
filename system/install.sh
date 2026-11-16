@@ -43,11 +43,18 @@ if [ ! -e "$CONTROL/place.toml" ]; then
   chown "$OWNER":luces "$CONTROL/place.toml"; chmod 0640 "$CONTROL/place.toml"
 fi
 
-echo "== Chip permissions"
-printf '%s\n' 'SUBSYSTEM=="hidraw", ATTRS{idVendor}=="048d", ATTRS{idProduct}=="5711", GROUP="luces", MODE="0660"' \
-  > /etc/udev/rules.d/60-luces.rules
+echo "== Permissions: the chip, the mouse's interface 3 and the GPU's I2C bus"
+install -m 0644 "$HERE/system/60-luces.rules" /etc/udev/rules.d/60-luces.rules
+# The keyboard's interface 2 also carries the keys being pressed: only if you enabled it, then run this again
+if python3 -I -c 'import sys, tomllib; d = tomllib.load(open(sys.argv[1], "rb")); sys.exit(d.get("keyboard", {}).get("enabled") is not True)' \
+    "$CONTROL/settings.toml" 2>/dev/null; then
+  echo "== Permissions: the keyboard's interface 2"
+  install -m 0644 "$HERE/system/61-luces-keyboard.rules" /etc/udev/rules.d/61-luces-keyboard.rules
+else
+  rm -f /etc/udev/rules.d/61-luces-keyboard.rules
+fi
 udevadm control --reload-rules
-udevadm trigger --subsystem-match=hidraw --settle
+udevadm trigger --subsystem-match=hidraw --subsystem-match=i2c-dev --settle
 
 echo "== Services"
 install -m 0644 "$HERE"/system/luces.service "$HERE"/system/luces-data.service "$HERE"/system/luces-data.timer /etc/systemd/system/

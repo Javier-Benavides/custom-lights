@@ -280,3 +280,35 @@ max_brightness = 45
 inhale_s = 3.0
 exhale_s = 7.0
 minutes = 10
+
+# --- Mouse, GPU light and keyboard: they follow the color of one zone ---------------------------
+# Off by default: turn on the ones you have. Each one is found by its exact USB or PCI ID, and only these models are
+# supported; read docs/hardware.md first. Nothing is saved in them while the scenes run. With the scene off, the GPU
+# goes to its off mode and the mouse to black. When the service stops, or with enabled = false, they are left off:
+# unplugging the mouse brings back its profile, a full power-off brings back the GPU's, and the keyboard shows its
+# stored effect once frames stop.
+# zone: case, cooler or rear. They need the board's chip working, because they follow one of its zones.
+# brightness: as the eye sees it, on top of the zone's color, which already carries max_brightness and the requested
+# brightness. 100 is the same as the zone; up to 300 raises the light without changing the hue, for a device that looks
+# dimmer than the fans with the same bytes.
+[mouse]                   # Razer Basilisk V3: logo, wheel and bottom strip, all the same color
+enabled = false
+zone = "case"
+brightness = 100
+
+[gpu]                     # MSI RTX 5070 Ti Gaming Trio. Needs the i2c-dev kernel module
+enabled = false
+zone = "case"
+brightness = 100
+interval_s = 3.0          # changes at most this often, to the average of the interval: each color is 7 writes, about 140 ms
+
+[keyboard]                # XPG SORCERER 80B ISO: every key the same color, with the per-key canvas, which is never saved
+enabled = false
+zone = "case"
+brightness = 300          # design choice: with the same bytes, the tested keyboard looked dimmer than the fans and the mouse
+interval_s = 0.04         # like the sync mode of the vendor's software
+refresh_s = 0.04          # the canvas fades if it is not repeated; with no frames, the keyboard goes back to its stored effect
+floor = "#04050B"         # a floor of light, to see the keys at night or with everything off: the bytes the keyboard
+                          # receives, with no gamma or brightness. It is the night blue of the sky (#A0B4FF) with little
+                          # light. Below the floor the keyboard stays on it; above it, it follows its zone unchanged.
+                          # Design choice: with 03 04 08 the keys were barely visible on the tested keyboard

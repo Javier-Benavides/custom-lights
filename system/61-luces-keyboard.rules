@@ -1,0 +1,6 @@
+# luces: the XPG SORCERER keyboard, only interface 2, the configuration one. Interfaces 0 and 1 are the keyboard itself
+# and are left alone. system/install.sh installs this file only if [keyboard] is enabled in your settings.
+# Careful: this interface also carries report 5, with the keys being pressed in its bytes 8 to 23. The service only
+# counts how many arrive (that is how it knows the keyboard is locked), never reads them, and has no network.
+SUBSYSTEM=="hidraw", ATTRS{idVendor}=="125f", ATTRS{idProduct}=="730e", IMPORT{builtin}="usb_id"
+SUBSYSTEM=="hidraw", ATTRS{idVendor}=="125f", ATTRS{idProduct}=="730e", ENV{ID_USB_INTERFACE_NUM}=="02", GROUP="luces", MODE="0660"

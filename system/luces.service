@@ -1,4 +1,6 @@
-# luces: the one that touches the chip. No network, no ports, only the hidraw nodes its user can open.
+# luces: the one that touches the chip and the devices. No network, no ports, only the nodes its group can open:
+# the chip, the mouse's interface 3, the GPU's I2C bus and the keyboard's interface 2 (system/60-luces.rules and
+# system/61-luces-keyboard.rules).
 [Unit]
 Description=luces: LED scenes
 
@@ -16,12 +18,14 @@ Nice=19
 CPUSchedulingPolicy=idle
 IOSchedulingClass=idle
 MemoryMax=48M
-TasksMax=4
+# The loop and one thread per device: mouse, GPU and keyboard.
+TasksMax=8
 PrivateNetwork=yes
 IPAddressDeny=any
 RestrictAddressFamilies=AF_UNIX
 DevicePolicy=closed
 DeviceAllow=char-hidraw rw
+DeviceAllow=char-i2c rw
 ProtectSystem=strict
 ProtectHome=yes
 PrivateTmp=yes

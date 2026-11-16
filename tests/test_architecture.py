@@ -7,7 +7,7 @@ import sys
 import tomllib
 import unittest
 
-from luces.hardware import ite
+from luces.hardware import ite, msi_gpu, razer, xpg_sorcerer
 from luces.settings import MIN_TONGUE_S
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -18,11 +18,13 @@ ALLOWED_HOSTS = {"aviationweather.gov", "services.swpc.noaa.gov", "gibs.earthdat
 NETWORK_MODULES = {"socket", "urllib", "http", "ftplib", "smtplib", "ssl", "requests", "asyncio"}
 SYSTEM_CALLS = {"subprocess"}
 MAY_RUN_PROGRAMS = {"luces/data/fetch.py", "luces/desktop.py", "luces/cli.py"}
+GPL_FILES = {"luces/hardware/ite.py", "luces/hardware/razer.py", "luces/hardware/msi_gpu.py"}   # see NOTICE.md
 LAYERS = {
     "physics": set(),
     "scenes": {"physics", "color"},
     "data": {"settings", "paths", "data"},
     "hardware": set(),
+    "emitter": {"color"},
     "color": {"physics"},
     "paths": set(),
     "settings": {"paths"},
@@ -125,13 +127,28 @@ class Safety(unittest.TestCase):
     def test_flash_commands_stay_forbidden(self):
         self.assertFalse({0x5E, 0x33, 0x47} & ite.ALLOWED)
 
+    def test_devices_never_save(self):
+        self.assertEqual(razer.ALLOWED, {(0x0F, 0x03), (0x0F, 0x02)})    # custom frame, and its mode without saving
+        self.assertEqual(razer.MODE_ARGS[0], 0x00)                        # 0x01 would be VARSTORE
+        self.assertNotIn(0x3F, msi_gpu.ALLOWED)                           # saves the GPU's mode
+        self.assertEqual(set(msi_gpu.ALLOWED), {0x22, 0x2E, 0x30, 0x31, 0x32, 0x36})
+
+    def test_keyboard_writes_stay_closed(self):
+        self.assertFalse({0xA0, 0xA1, 0xA4, 0xA5} & xpg_sorcerer.ALLOWED)
+        self.assertEqual(xpg_sorcerer.NEVER, {0xA0, 0xA1, 0xA4, 0xA5})
+        self.assertEqual(len(xpg_sorcerer.UNLOCK), 13)                     # 0xA6 and 0xEA only in these packets
+        self.assertEqual([hx[:2] for _, hx in xpg_sorcerer.UNLOCK].count("ea"), 6)
+        self.assertEqual({p[1] for p in xpg_sorcerer.UNLOCK_PACKETS}, {0xA6, 0xEA, 0xA3})
+
     def test_the_flash_limit_of_tongues_stays(self):
         self.assertGreaterEqual(MIN_TONGUE_S, 0.45)
 
-    def test_only_the_chip_file_is_under_the_gpl(self):
+    def test_only_the_files_derived_from_gpl_code_are_under_the_gpl(self):
         for path in source_files():
             has_header = "GPL-2.0-or-later" in read(path).split("\n")[0]
-            self.assertEqual(has_header, relative(path) == "luces/hardware/ite.py", relative(path))
+            self.assertEqual(has_header, relative(path) in GPL_FILES, relative(path))
+        for path in GPL_FILES:
+            self.assertIn(f"`{path}`", read("NOTICE.md"), path)
 
 
 class Privacy(unittest.TestCase):

@@ -1,0 +1,9 @@
+# luces: only these nodes go to the luces group. system/install.sh installs this file.
+# The board's lighting chip (ITE IT5711, USB 048d:5711)
+SUBSYSTEM=="hidraw", ATTRS{idVendor}=="048d", ATTRS{idProduct}=="5711", GROUP="luces", MODE="0660"
+# Razer Basilisk V3 mouse: only interface 3, the vendor one. The others are the mouse itself and are left alone.
+# Two lines: within one line, udev checks ENV conditions before it runs IMPORT.
+SUBSYSTEM=="hidraw", ATTRS{idVendor}=="1532", ATTRS{idProduct}=="0099", IMPORT{builtin}="usb_id"
+SUBSYSTEM=="hidraw", ATTRS{idVendor}=="1532", ATTRS{idProduct}=="0099", ENV{ID_USB_INTERFACE_NUM}=="03", GROUP="luces", MODE="0660"
+# Light of the MSI RTX 5070 Ti Gaming Trio: only bus 1 of the NVIDIA card, and only with this card.
+SUBSYSTEM=="i2c-dev", ATTR{name}=="NVIDIA i2c adapter 1 at 1:00.0", ATTRS{vendor}=="0x10de", ATTRS{device}=="0x2c05", ATTRS{subsystem_vendor}=="0x1462", ATTRS{subsystem_device}=="0x5315", GROUP="luces", MODE="0660"

@@ -11,6 +11,7 @@ HEX = re.compile(r"#[0-9A-Fa-f]{6}")
 ICAO = re.compile(r"[A-Z0-9]{4}")
 SCENES = ("sky", "sun", "relax", "breathe", "color", "off")
 ZONE_NAMES = ("case", "cooler", "rear")
+DEVICES = ("mouse", "gpu", "keyboard")
 MIN_TONGUE_S = 0.45   # never more than 3 tongues a second: the limit for flickering light, see docs/decisions.md
 
 
@@ -198,9 +199,24 @@ def _check_breathe(c):
     c.number("breathe.minutes", 1, 120)
 
 
+def _check_devices(c):
+    for device in DEVICES:
+        enabled = c.value(f"{device}.enabled")
+        if enabled is not None and not isinstance(enabled, bool):
+            c.errors.append(f"{device}.enabled must be true or false")
+        if c.value(f"{device}.zone") not in (None, *ZONE_NAMES):
+            c.errors.append(f"{device}.zone must be case, cooler or rear")
+        c.number(f"{device}.brightness", 0, 300)
+        if isinstance(c.settings.get(device), dict) and "floor" in c.settings[device]:
+            c.color(f"{device}.floor")      # a floor of light, in the bytes the device receives
+    c.number("gpu.interval_s", 1, 60)       # each color is 7 writes with pauses: about 140 ms
+    c.number("keyboard.interval_s", 0.02, 1)
+    c.number("keyboard.refresh_s", 0.02, 1)  # the canvas fades if it is not repeated
+
+
 def validate(settings):
     c = _Checker(settings)
-    for check in (_check_general, _check_zones, _check_sky, _check_sun, _check_relax, _check_breathe):
+    for check in (_check_general, _check_zones, _check_sky, _check_sun, _check_relax, _check_breathe, _check_devices):
         check(c)
     if c.errors:
         raise InvalidSettings("; ".join(c.errors))
