@@ -1,0 +1,6 @@
+# Copy to /var/lib/luces/control/place.toml. This file is private: never commit your real one.
+# One decimal is enough: the Sun needs no more, and it keeps your exact location out of everything.
+lat = 48.9
+lon = 2.4
+stations = ["LFPB", "LFPG"]        # ICAO codes of nearby airports, in order of preference. Empty: no weather
+# box = [48.0, 1.5, 49.5, 3.5]     # optional, for the satellite: [south, west, north, east], with no tall mountains

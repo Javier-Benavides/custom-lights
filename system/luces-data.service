@@ -1,0 +1,33 @@
+# luces-data: the one with network. Fetches observed weather and solar activity; it sees no device.
+[Unit]
+Description=luces: observed weather and solar activity
+
+[Service]
+Type=oneshot
+User=luces
+Group=luces
+ExecStart=/usr/bin/python3 -I /usr/local/lib/luces/bin/luces-data
+TimeoutStartSec=90
+Nice=19
+IOSchedulingClass=idle
+MemoryMax=64M
+PrivateDevices=yes
+ProtectSystem=strict
+ReadWritePaths=/var/lib/luces/data
+ProtectHome=yes
+PrivateTmp=yes
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectKernelLogs=yes
+ProtectControlGroups=yes
+ProtectClock=yes
+ProtectHostname=yes
+NoNewPrivileges=yes
+CapabilityBoundingSet=
+LockPersonality=yes
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX AF_NETLINK
+RestrictNamespaces=yes
+RestrictRealtime=yes
+RestrictSUIDSGID=yes
+SystemCallArchitectures=native
+SystemCallFilter=@system-service

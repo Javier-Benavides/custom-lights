@@ -1,0 +1,15 @@
+# Changes here need the owner's review.
+# These paths steer agents, run with privileges, or touch hardware.
+/.github/                     @Javier-Benavides
+/AGENTS.md                    @Javier-Benavides
+/CLAUDE.md                    @Javier-Benavides
+/luces/physics/AGENTS.md      @Javier-Benavides
+/luces/hardware/              @Javier-Benavides
+/system/                      @Javier-Benavides
+/SECURITY.md                  @Javier-Benavides
+/docs/threat-model.md         @Javier-Benavides
+/docs/ai-workflow.md          @Javier-Benavides
+/tests/test_architecture.py   @Javier-Benavides
+/tests/hardware/              @Javier-Benavides
+/tools/check_text.py          @Javier-Benavides
+/pyproject.toml               @Javier-Benavides

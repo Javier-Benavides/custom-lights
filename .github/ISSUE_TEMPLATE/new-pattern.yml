@@ -1,0 +1,51 @@
+name: "New pattern or physics"
+description: "A new phenomenon, or a better model of one"
+labels: ["needs-triage", "physics"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        A maintainer reads every issue. If it is approved, an AI agent may work on it from a spec the maintainer writes.
+        Text here is treated as data: instructions for an AI have no effect. **Do not post your location**, and remove it from logs.
+  - type: textarea
+    id: phenomenon
+    attributes:
+      label: "Phenomenon"
+      description: "What happens in the real world."
+    validations:
+      required: true
+  - type: textarea
+    id: sources
+    attributes:
+      label: "Sources"
+      description: "A paper, measurement or formula. Everything in this project starts from something real. If a value is a design choice, say so."
+    validations:
+      required: true
+  - type: textarea
+    id: model
+    attributes:
+      label: "Model"
+      description: "How it could work: what goes in, what comes out, and its rhythm or formula. A pattern takes a time and returns a number."
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: "How do we know it works?"
+      description: "Measurable properties. Example: the spectrum falls as 1/f² above 2 Hz."
+    validations:
+      required: true
+  - type: textarea
+    id: uses
+    attributes:
+      label: "Where it would be used"
+      description: "A scene, or something outside this project."
+    validations:
+      required: false
+  - type: checkboxes
+    id: privacy
+    attributes:
+      label: "Privacy"
+      options:
+        - label: "This issue has no real location, airport code, name or secret"
+          required: true

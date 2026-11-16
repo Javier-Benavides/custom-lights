@@ -1,0 +1,30 @@
+[Desktop Entry]
+Type=Application
+Name=Luces
+Comment=A click goes to the next mode; right click picks one
+Icon=weather-clear
+Exec=/usr/local/bin/luces next
+Terminal=false
+StartupNotify=false
+Categories=Utility;
+Actions=sky;sun;relax;breathe;off;
+
+[Desktop Action sky]
+Name=Sky
+Exec=/usr/local/bin/luces sky
+
+[Desktop Action sun]
+Name=Sun
+Exec=/usr/local/bin/luces sun
+
+[Desktop Action relax]
+Name=Relax
+Exec=/usr/local/bin/luces relax
+
+[Desktop Action breathe]
+Name=Breathe for 10 minutes
+Exec=/usr/local/bin/luces breathe 10
+
+[Desktop Action off]
+Name=Off
+Exec=/usr/local/bin/luces off

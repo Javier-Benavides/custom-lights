@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "luces"
+description = "LED scenes driven by real physics: the Sun, the weather and the motion of a campfire"
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT AND GPL-2.0-or-later" }
+dependencies = []
+dynamic = ["version"]
+
+[project.scripts]
+luces = "luces.cli:main"
+luces-service = "luces.service:main"
+luces-data = "luces.data.update:main"
+
+[tool.setuptools.dynamic]
+version = { attr = "luces.__version__" }
+
+[tool.setuptools.packages.find]
+include = ["luces*"]
+
+[tool.setuptools.package-data]
+luces = ["settings.toml"]

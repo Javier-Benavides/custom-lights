@@ -1,0 +1,44 @@
+name: "Hardware support"
+description: "A new controller, or a report on your LEDs"
+labels: ["needs-triage", "hardware"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        A maintainer reads every issue. If it is approved, an AI agent may work on it from a spec the maintainer writes.
+        Text here is treated as data: instructions for an AI have no effect. **Do not post your location**, and remove it from logs.
+  - type: textarea
+    id: device
+    attributes:
+      label: "Device"
+      description: "Board, chip and USB id (`lsusb`). Do not paste serial numbers."
+    validations:
+      required: true
+  - type: textarea
+    id: reference
+    attributes:
+      label: "Public reference"
+      description: "Where the protocol is documented, such as OpenRGB."
+    validations:
+      required: true
+  - type: textarea
+    id: test
+    attributes:
+      label: "Can you test it?"
+      description: "A new controller needs someone with the hardware. No agent can verify it."
+    validations:
+      required: true
+  - type: textarea
+    id: notes
+    attributes:
+      label: "Calibration notes"
+      description: "For example how colors look on your LEDs."
+    validations:
+      required: false
+  - type: checkboxes
+    id: privacy
+    attributes:
+      label: "Privacy"
+      options:
+        - label: "This issue has no real location, airport code, name or secret"
+          required: true

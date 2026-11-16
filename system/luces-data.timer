@@ -1,0 +1,11 @@
+[Unit]
+Description=luces: data every hour
+
+[Timer]
+OnBootSec=3min
+OnCalendar=*-*-* *:10:00
+RandomizedDelaySec=120
+Persistent=false
+
+[Install]
+WantedBy=timers.target

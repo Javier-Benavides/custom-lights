@@ -1,0 +1,46 @@
+# luces: the one that touches the chip. No network, no ports, only the hidraw nodes its user can open.
+[Unit]
+Description=luces: LED scenes
+
+[Service]
+User=luces
+Group=luces
+ExecStart=/usr/bin/python3 -I /usr/local/lib/luces/bin/luces-service
+Restart=on-failure
+RestartSec=10
+TimeoutStopSec=5
+RuntimeDirectory=luces
+RuntimeDirectoryMode=0755
+UMask=0022
+Nice=19
+CPUSchedulingPolicy=idle
+IOSchedulingClass=idle
+MemoryMax=48M
+TasksMax=4
+PrivateNetwork=yes
+IPAddressDeny=any
+RestrictAddressFamilies=AF_UNIX
+DevicePolicy=closed
+DeviceAllow=char-hidraw rw
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectKernelLogs=yes
+ProtectControlGroups=yes
+ProtectClock=yes
+ProtectHostname=yes
+NoNewPrivileges=yes
+CapabilityBoundingSet=
+AmbientCapabilities=
+LockPersonality=yes
+MemoryDenyWriteExecute=yes
+RestrictNamespaces=yes
+RestrictRealtime=yes
+RestrictSUIDSGID=yes
+SystemCallArchitectures=native
+SystemCallFilter=@system-service
+
+[Install]
+WantedBy=multi-user.target

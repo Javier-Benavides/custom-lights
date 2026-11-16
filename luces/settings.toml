@@ -1,0 +1,282 @@
+# luces settings: everything that can change without touching code.
+# Edit with `luces settings`. The service rereads it within seconds. If something is wrong it keeps
+# the last valid settings, and `luces status` says what failed.
+# brightness: 0 to 100, as the eye sees it. colors: #RRGGBB. times: seconds, unless the name says otherwise.
+#
+# These colors were calibrated by eye on one set of ARGB fans. LEDs are not a screen: expect to retune
+# them on yours, see docs/hardware.md.
+
+[general]
+initial_scene = "sky"
+max_brightness = 70       # current limit for the LEDs, in every scene
+gamma = 2.2               # corrects for the eye's response; without it fades look uneven
+
+[zones]
+# header: the connector on the board (1, 2 or 3). Check yours with `luces test`.
+# leds: how many get painted. Extra ones do nothing.
+case = { header = 1, leds = 32 }
+cooler = { header = 2, leds = 32 }
+# rear = { header = 3, leds = 32 }
+
+[schedule]
+# Only for sun and relax. It follows the real Sun, so it shifts by itself between summer and winter.
+# They come on at sunrise and go off some hours after sunset. The sky goes off with the real night;
+# breathe and color ignore this.
+after_sunset_h = 3.0      # how many hours after sunset they go off
+on_choose_h = 2.0         # a scene chosen by hand stays on at least this long
+
+# --- Sky: the color comes from the altitude of the Sun, in degrees --------------------------
+# Why these stages: docs/physics/twilight.md. The clock time comes from these altitudes, so it changes every day.
+# Sunrise and sunset are separate tables because they need not match. The sunrise table assumes mountains
+# to the east: the sky lights up long before the Sun is seen. Edit it for your horizon.
+# `leds` is the share of LEDs on: at the end the color stays and the LEDs go out one by one.
+# Between sky blue and gold there are two dim stages: blue and orange at full brightness blend through white,
+# which the real sky never shows.
+# With 8 to 10 % blue the gold looked peach: gold goes almost without blue, with green near half of red.
+[[sky.sunset]]
+altitude = -8.0
+color = "#A0B4FF"
+brightness = 22
+leds = 0.0
+stage = "night: the last LED went out"
+
+[[sky.sunset]]
+altitude = -5.0
+color = "#A0B4FF"
+brightness = 22
+leds = 1.0
+stage = "blue: from here the LEDs go out one by one"
+
+[[sky.sunset]]
+altitude = -3.5
+color = "#B4BEFF"
+brightness = 30
+stage = "grayish blue"
+
+[[sky.sunset]]
+altitude = -2.7
+color = "#CCC8FF"
+brightness = 38
+stage = "bluish gray"
+
+[[sky.sunset]]
+altitude = -2.0
+color = "#F0A8C8"
+brightness = 46
+stage = "pinkish lilac"
+
+[[sky.sunset]]
+altitude = -1.2
+color = "#FF9080"
+brightness = 56
+stage = "soft salmon"
+
+[[sky.sunset]]
+altitude = -0.3
+color = "#FF6432"
+brightness = 70
+stage = "pinkish orange"
+
+[[sky.sunset]]
+altitude = 0.8
+color = "#FF7814"
+brightness = 76
+stage = "orange"
+
+[[sky.sunset]]
+altitude = 2.2
+color = "#FFA420"
+brightness = 76
+stage = "deep gold"
+
+[[sky.sunset]]
+altitude = 5.0
+color = "#FFB824"
+brightness = 74
+stage = "gold"
+
+[[sky.sunset]]
+altitude = 6.5
+color = "#FFC028"
+brightness = 68
+stage = "gold begins"
+
+[[sky.sunset]]
+altitude = 8.0
+color = "#C8A078"
+brightness = 48
+stage = "light brown"
+
+[[sky.sunset]]
+altitude = 10.0
+color = "#7896C8"
+brightness = 48
+stage = "slate blue"
+
+[[sky.sunset]]
+altitude = 12.0
+color = "#5AB4FF"
+brightness = 60
+stage = "sky blue"
+
+[[sky.sunrise]]
+altitude = -8.0
+color = "#A0B4FF"
+brightness = 22
+leds = 0.0
+stage = "night: the first LED comes on"
+
+[[sky.sunrise]]
+altitude = -6.0
+color = "#A0B4FF"
+brightness = 22
+leds = 1.0
+stage = "blue: all the LEDs are on"
+
+[[sky.sunrise]]
+altitude = -4.0
+color = "#B4BEFF"
+brightness = 30
+stage = "grayish blue"
+
+[[sky.sunrise]]
+altitude = -2.5
+color = "#F0A8C8"
+brightness = 46
+stage = "pinkish lilac"
+
+[[sky.sunrise]]
+altitude = -1.5
+color = "#FF9080"
+brightness = 56
+stage = "soft salmon"
+
+[[sky.sunrise]]
+altitude = 2.0
+color = "#FF7846"
+brightness = 70
+stage = "pinkish orange"
+
+[[sky.sunrise]]
+altitude = 5.0
+color = "#FF7814"
+brightness = 72
+stage = "orange: the Sun clears the mountains"
+
+[[sky.sunrise]]
+altitude = 6.5
+color = "#FF9620"
+brightness = 74
+stage = "deep gold"
+
+[[sky.sunrise]]
+altitude = 9.0
+color = "#FFAA28"
+brightness = 75
+stage = "gold"
+
+[[sky.sunrise]]
+altitude = 10.5
+color = "#C8A078"
+brightness = 50
+stage = "light brown"
+
+[[sky.sunrise]]
+altitude = 12.0
+color = "#7896C8"
+brightness = 50
+stage = "slate blue"
+
+[[sky.sunrise]]
+altitude = 14.0
+color = "#5AB4FF"
+brightness = 60
+stage = "sky blue"
+
+[sky.weather]
+# LEDs are not a screen: to look white, green must sit below red and blue. So the white and grays here
+# read as slightly lilac in code.
+max_age_h = 3             # with older data, a clear sky
+white = "#AADCFF"         # very pale blue: on these LEDs pure white always looks lilac
+# golden, pink and afterglow are for clouds at 6 km. At other heights the timing shifts by itself.
+golden = "#FFC81E"        # clouds in the golden hour: the Sun still high lights them gold, not red
+pink = "#FFA987"          # with the Sun on the horizon: the sky stays orange and clouds look pink
+afterglow = "#FF7D85"     # 2° below the horizon: bright pink, the last sunlight on the cloud
+gray = "#C8C5FF"          # 3° below the horizon: the cloud is in the Earth's shadow
+cloud_mix = 1.0           # how much the cloud takes that color: 1 is fully
+clouds_at_sunset = 0.85   # the same with the Sun low, so the sky stays visible
+cloud_height_km = 6.0     # if the station gives no height. Higher clouds stay lit for longer
+overcast_brightness = 0.8 # brightness left under a cloud
+pass_s = 40.0             # how long a big cloud takes to pass: lower moves more
+edge = 0.12               # how softly a cloud enters and leaves
+thin = 0.65               # how much the thinnest part of a cloud covers: the center covers everything
+zone_delay_s = 8.0        # how long a cloud takes to cross from one zone to the next
+rain = { color = "#EACDFF", brightness = 32 }    # dark bluish gray
+storm = { color = "#FFD7F8", brightness = 28 }   # dark gray. Below 25 there are so few light steps that gray turns lilac
+snow = { color = "#F5E6FF", brightness = 50 }
+fog = { color = "#FFD7F8", brightness = 30 }
+haze = { color = "#FFCABA", brightness = 30 }
+
+[sky.life]                # even when clear, the sky moves a little
+tone = "#2878FF"          # the blue it drifts towards
+mix = 0.5                 # how close it gets to that tone
+brightness = 0.15         # how much brightness rises and falls
+period_s = 90.0           # how long the slowest change takes
+
+[sky.lightning]           # only with an observed thunderstorm
+color = "#FFB400"         # yellow on these LEDs
+brightness = 100
+per_hour = 20             # about one every three minutes
+fade_s = 0.06             # how long each stroke takes to fade
+
+[sky.satellite]           # how high clouds are counted in the infrared image
+contrast = 14             # how much brighter than the ground a pixel must be to count as cloud: lower sees more clouds
+margin_k = 8              # or how many degrees colder than the air
+
+# --- Sun: the colors and events of the real Sun, with the motion of a campfire ---------------
+# Three stacked rhythms: embers, gusts and tongues. Theory: docs/physics/fire.md.
+# On these LEDs green dominates: #FF5A14 reads as full orange and #FF9628 already looks pale.
+[sun]
+palette = ["#8C1E00", "#D83000", "#FF3C00", "#FF3C00", "#FF5A0A", "#FF7814", "#FF9628"]   # from coldest to hottest
+sunspot = "#280500"       # almost black
+flare = "#FFC83C"         # the burst, yellower than everything else
+brightness = 52
+flame_min = 1.3           # height of the tongues with a quiet Sun
+flame_max = 2.0           # and with a very active Sun
+tongue_s = 0.45           # how often a tongue is born: 1.5/√D Hz with D = 0.46 m. Not below 0.45: over 3 flashes a second
+tongue_fall_s = 0.3       # how long it takes to die
+gust_s = 6.0              # how long a gust lasts
+ember_s = 30.0            # how long the embers take to change
+restlessness_s = 60.0     # how often it changes between calm and lively stretches
+travel_s = 0.3            # how long the fire takes to reach the next zone
+flux_quiet = 70.0         # 10.7 cm flux of a quiet Sun
+flux_active = 200.0       # and of a very active Sun
+activity_without_data = 0.35
+max_age_h = 72
+sunspots = { base = 6.0, per_number = 0.1, max = 30.0, duration_s = 30.0, darkens = 0.85 }
+flares = { base = 30.0, c = 2.0, m = 8.0, x = 20.0, max = 60.0, rise_s = 2.0, fall_s = 8.0 }
+
+# --- Relax: green that comes and goes towards white, low and slow ----------------------------
+[relax]
+palette = ["#1EB428", "#3CB432", "#78C83C", "#A0D28C", "#FFE6C8"]   # forest green rising to warm white. With blue it turns turquoise
+min_brightness = 35       # below 25 there are so few light steps that the color is lost
+max_brightness = 55
+cycle_s = 55.0            # the longest wave of brightness: shorter ones ride on it, giving different peaks
+color_cycle_s = 90.0      # the longest wave of color, which never stops
+irregularity = 0.4        # how much each cycle stretches and shrinks: 0 is a perfect cycle
+zone_delay_s = 7.0        # the cooler follows the case
+
+[relax.pulse]             # an invitation to breathe slowly, without looking at it: it ends at the rhythm of [breathe]
+start_s = 5.0             # starts near a normal rhythm: 12 breaths a minute
+slowdown_min = 12         # the minutes it takes to slow down to 6 a minute
+brightness = 0.12         # how much it rises and falls: if it is too noticeable, lower this
+tone = 0.12               # how close it gets to white on the inhale
+
+# --- Breathe: a guide of 6 breaths a minute, with a long exhale -------------------------------
+[breathe]
+color = "#3DFFE0"
+min_brightness = 15
+max_brightness = 45
+inhale_s = 3.0
+exhale_s = 7.0
+minutes = 10
