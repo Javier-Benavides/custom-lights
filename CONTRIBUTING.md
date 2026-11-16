@@ -18,7 +18,7 @@ Python 3.11 or newer. There is nothing to install.
 - **A new pattern:** rain, waves, a candle, an aurora. Bring a source or a measurement.
 - **Better physics:** a better model, a real measurement, a source that contradicts ours.
 - **A new scene.**
-- **A new controller:** see [docs/hardware.md](docs/hardware.md). You need the hardware.
+- **A new controller or device:** see [docs/hardware.md](docs/hardware.md). You need the hardware.
 - **Calibration:** how the colors look on your LEDs.
 
 Read [docs/architecture.md](docs/architecture.md) for where things go, and [docs/decisions.md](docs/decisions.md) before changing behavior.
@@ -49,4 +49,4 @@ Point it at [AGENTS.md](AGENTS.md). `CLAUDE.md` is a link to the same file.
 - A comment explains why, not what.
 - Numbers a person might tune go in `settings.toml`.
 
-By contributing you agree your work is under the [MIT license](LICENSE), or under the GPL if it goes in `luces/hardware/ite.py`.
+By contributing you agree your work is under the [MIT license](LICENSE), or under the GPL if it goes in `luces/hardware/ite.py`, `razer.py` or `msi_gpu.py`.

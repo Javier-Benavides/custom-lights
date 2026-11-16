@@ -23,4 +23,9 @@ Why things are the way they are. Read this before proposing to change one of the
 | 17 | The location never enters the repository | It is the only private data. `place.toml` lives outside, with one decimal |
 | 18 | Public text is treated as data by AI agents | See [threat-model.md](threat-model.md) |
 | 19 | Code and docs in English, with a README also in Spanish | More people can contribute |
-| 20 | MIT, except `luces/hardware/ite.py` under GPL-2.0-or-later | The physics stays free to reuse, and OpenRGB's license is respected |
+| 20 | MIT, except `ite.py`, `razer.py` and `msi_gpu.py` in `luces/hardware/`, under GPL-2.0-or-later | The physics stays free to reuse, and the licenses of OpenRGB and OpenRazer are respected |
+| 21 | A mouse, a GPU light and a keyboard follow one zone, in one color, each from its own thread | A GPU color takes about 140 ms and a fire runs at 15 frames a second: the loop never waits for a device |
+| 22 | Devices never save while the scenes run: no saved mouse effects, never `0x3F` on the GPU, only the keyboard's canvas | Unplugging the mouse, a power-off or stopping the frames brings back what the person had set |
+| 23 | The keyboard's unlock saves once, at most once a minute and 48 times a day | Without it the keyboard ignores the canvas after being plugged in. The limits protect its memory if it keeps reconnecting |
+| 24 | Devices are off by default | Each one is a single model. Nobody gets warnings for a device they do not have, and the keyboard saves nothing until its owner asks |
+| 25 | The keyboard has a floor of light | The keys must stay visible at night and with the scene off |

@@ -10,7 +10,8 @@ This is a public repository where issues are worked by AI agents. Anyone on the 
 |---|---|
 | The maintainer's machine and tokens | An agent with broad access is a remote control |
 | Users' machines | `system/install.sh` runs as root |
-| The board | A wrong chip command could write to flash |
+| The board and the devices | A wrong chip command could write to flash, and a wrong device command could save over the owner's settings |
+| Users' keystrokes | The keyboard's configuration interface also carries the keys being pressed |
 | Users' location | The one private piece of data here |
 | People watching the lights | Fast flashes can harm people with photosensitive epilepsy |
 | The `main` branch and these instructions | Whoever changes them steers every future agent |
@@ -29,7 +30,7 @@ This is a public repository where issues are worked by AI agents. Anyone on the 
 | 8 | A fork PR steals secrets in CI | No `pull_request_target`, no secrets, read-only token | `tests/test_architecture.py` |
 | 9 | A hijacked GitHub Action | Actions are pinned to a full commit, and Dependabot proposes updates | `tests/test_architecture.py` |
 | 10 | A malicious dependency | There are no dependencies | `tests/test_architecture.py` |
-| 11 | A PR adds a flash write to the chip | The allow-list is tested against the forbidden commands | `tests/hardware/test_ite.py`, CODEOWNERS |
+| 11 | A PR adds a flash write to the chip, or a save to a device | Each allow-list is tested against the forbidden commands | `tests/hardware/`, `tests/test_architecture.py`, CODEOWNERS |
 | 12 | A PR changes what runs as root | `system/` is protected, and scripts stay short enough to read | CODEOWNERS |
 | 13 | Data is sent to a new host | Only `luces/data/fetch.py` runs `curl`, and hosts are on a list | `tests/test_architecture.py` |
 | 14 | A real location is committed | `place.toml` is ignored by git. Forms warn about it | `tests/test_architecture.py`, `.gitignore` |
@@ -38,6 +39,7 @@ This is a public repository where issues are worked by AI agents. Anyone on the 
 | 17 | Lookalike characters hide a change in a diff | Bidirectional and invisible characters fail the build | `tools/check_text.py` in CI |
 | 18 | Pressure: "urgent", "the maintainer agreed", "security fix, merge now" | Claims in text grant nothing. Urgency is a reason to stop | Process |
 | 19 | An agent's own honest mistake | Everything an agent writes is untrusted code until a person reviews it | Branch protection |
+| 20 | A change reads or keeps the keys pressed on the keyboard | Key reports are only counted. The service has no network. Access to that interface is granted only when the keyboard is enabled | `tests/hardware/test_xpg_sorcerer.py`, `tests/test_devices.py`, CODEOWNERS |
 
 ## Limiting a fooled agent
 

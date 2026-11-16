@@ -47,7 +47,7 @@ Each phenomenon has a page with the theory, sources and limits: [docs/physics](d
 
 ## Run it on real LEDs
 
-Today it supports one controller: the ITE IT5711 on Gigabyte boards, on Linux. **Read [docs/hardware.md](docs/hardware.md) first:** it talks directly to a chip, and has been tested on one machine. New controllers are welcome.
+Today it supports one controller: the ITE IT5711 on Gigabyte boards, on Linux. A Razer Basilisk V3 mouse, the light of an MSI RTX 5070 Ti Gaming Trio and an XPG SORCERER keyboard can follow it, each turned on in `settings.toml`. **Read [docs/hardware.md](docs/hardware.md) first:** it talks directly to a chip and to those devices, and has been tested on one machine. New controllers are welcome.
 
 ```bash
 sudo bash system/install.sh
@@ -66,7 +66,7 @@ luces/
   physics/     models of light and motion, with no dependencies   <- reuse this
   scenes/      one scene per file
   data/        METAR, satellite and NOAA: the only network code
-  hardware/    real LEDs
+  hardware/    real LEDs: the board's chip, a mouse, a GPU light and a keyboard
   color.py     from what the eye sees to bytes
   service.py   the loop
   cli.py       the luces command
@@ -85,4 +85,4 @@ This repository is built to work with AI agents. [AGENTS.md](AGENTS.md) tells th
 
 ## License
 
-MIT, except `luces/hardware/ite.py`, which is GPL-2.0-or-later. See [NOTICE.md](NOTICE.md).
+MIT, except `ite.py`, `razer.py` and `msi_gpu.py` in `luces/hardware/`, which are GPL-2.0-or-later. See [NOTICE.md](NOTICE.md).

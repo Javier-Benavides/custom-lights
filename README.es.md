@@ -26,7 +26,7 @@ La física es un paquete aparte y sin dependencias: entran números y salen núm
 
 ## Usarlo en LED reales
 
-Hoy soporta un controlador: el ITE IT5711 de placas Gigabyte, en Linux. **Primero lee [docs/hardware.md](docs/hardware.md):** habla directo con un chip y solo se ha probado en una máquina.
+Hoy soporta un controlador: el ITE IT5711 de placas Gigabyte, en Linux. Un mouse Razer Basilisk V3, la luz de una MSI RTX 5070 Ti Gaming Trio y un teclado XPG SORCERER pueden seguirlo; cada uno se activa en `settings.toml`. **Primero lee [docs/hardware.md](docs/hardware.md):** habla directo con un chip y con esos aparatos, y solo se ha probado en una máquina.
 
 ```bash
 sudo bash system/install.sh
@@ -40,4 +40,4 @@ Este repositorio está pensado para trabajar con agentes de IA: [AGENTS.md](AGEN
 
 ## Licencia
 
-MIT, salvo `luces/hardware/ite.py`, que es GPL-2.0-or-later. Ver [NOTICE.md](NOTICE.md).
+MIT, salvo `ite.py`, `razer.py` y `msi_gpu.py` en `luces/hardware/`, que son GPL-2.0-or-later. Ver [NOTICE.md](NOTICE.md).

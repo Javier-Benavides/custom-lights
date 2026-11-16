@@ -1,6 +1,6 @@
 # Architecture
 
-luces is small on purpose: Python's standard library, `curl`, and about 2,400 lines. Each folder has one job, and a test stops the layers from mixing.
+luces is small on purpose: Python's standard library, `curl`, and about 3,100 lines. Each folder has one job, and a test stops the layers from mixing.
 
 ## Layers
 
@@ -24,7 +24,8 @@ luces is small on purpose: Python's standard library, `curl`, and about 2,400 li
 | `luces/color.py` | From what the eye sees to bytes | `physics` |
 | `luces/scenes/` | One scene per file: an instant becomes colors per zone | `physics`, `color` |
 | `luces/data/` | Downloads and parses observed data. The only network code | `settings`, `paths` |
-| `luces/hardware/` | Talks to real LEDs | Nothing of this project |
+| `luces/hardware/` | Talks to real LEDs and devices | Nothing of this project |
+| `luces/emitter.py` | Sends colors to one slow device from its own thread | `color` |
 | `luces/service.py` | The loop: read, compute, smooth, send | Everything above |
 | `luces/cli.py` | The `luces` command. Writes a small file the service watches | Everything above |
 | `luces/settings.py`, `paths.py` | Reads and validates settings, and where files live | Nothing else |
@@ -38,14 +39,15 @@ luces is small on purpose: Python's standard library, `curl`, and about 2,400 li
 3. `linear_target` turns color and brightness into light.
 4. `Fade.step` smooths in linear light.
 5. `with_flash` puts lightning on top: it lasts less than the smoothing does.
-6. `frame` turns light into bytes per LED.
-7. It sends only if the frame changed, plus one refresh a minute.
+6. `device_color` gives each enabled device the light of its zone, and its emitter takes it without making the loop wait.
+7. `frame` turns light into bytes per LED.
+8. It sends only if the frame changed, plus one refresh a minute.
 
 ## Two services, least privilege
 
 | Service | Network | Chip | Why |
 |---|---|---|---|
-| `luces.service` | None | Yes | Touches the hardware, so it cannot reach the internet |
+| `luces.service` | None | Yes, and the enabled devices | Touches the hardware, so it cannot reach the internet |
 | `luces-data.service` | Yes | None | Reaches the internet, so it cannot see any device |
 
 They share only JSON files under `/var/lib/luces`. Both run as a system user with a tight systemd sandbox, in `system/`.
@@ -58,7 +60,7 @@ They share only JSON files under `/var/lib/luces`. Both run as a system user wit
 | Change how a phenomenon works | `luces/physics/`, and its page in `docs/physics/` |
 | Change how a scene combines things | `luces/scenes/` |
 | Parse a new data format | `luces/data/` |
-| Support a new controller | `luces/hardware/`, with the hardware in hand |
+| Support a new controller or device | `luces/hardware/`, with the hardware in hand |
 | Add a command | `luces/cli.py` |
 
 ## How to add things
@@ -69,7 +71,7 @@ They share only JSON files under `/var/lib/luces`. Both run as a system user wit
 
 **A data source.** See [data-sources.md](data-sources.md). A new host needs a maintainer.
 
-**An output.** See [hardware.md](hardware.md).
+**An output or a device.** See [hardware.md](hardware.md).
 
 ## Design rules
 
