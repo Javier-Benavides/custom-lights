@@ -2,6 +2,8 @@
 
 LED scenes driven by real physics. Your PC's lights follow the real Sun, the observed weather, today's solar activity and the motion of a campfire.
 
+<p align="center"><img src="docs/images/day-in-the-mountains.svg" width="680" alt="ASCII animation: the camera rises from a desk to a mountain range and goes through dawn, sun, passing clouds, rain, a storm with yellow lightning, alpenglow and night, while an LED strip copies the color of the sky."></p>
+
 [Español](README.es.md)
 
 | Scene | What you see | Driven by |

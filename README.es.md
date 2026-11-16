@@ -2,6 +2,8 @@
 
 Escenas LED movidas por física real. Las luces de tu PC siguen al Sol real, el clima observado, la actividad solar del día y el movimiento de una fogata.
 
+<p align="center"><img src="docs/images/day-in-the-mountains.svg" width="680" alt="Animación en ASCII: la cámara sube desde un escritorio hacia la cordillera y recorre el amanecer, el sol, las nubes que pasan, la lluvia, una tormenta con rayos amarillos, el arrebol y la noche, mientras una tira de LEDs copia el color del cielo."></p>
+
 [English](README.md)
 
 | Escena | Qué ves | Qué la mueve |
